@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AnnoTalk</title>
+    <link rel="icon" type="image/x-icon" href="./images/favicon.png" />
+    <link rel="stylesheet" href="./style/style.css">
+</head>
+
+<body class="bg-gradient-to-br from-gray-950 via-gray-900  to-purple-950 text-white h-full">
+    <div class="flex flex-col md:flex-row min-h-screen w-screen overflow-hidden">
+
+        
+        <aside
+            class="hidden md:block w-full md:w-1/5 bg-black/30 backdrop-blur-lg px-4 md:px-6 py-6 border-b md:border-b-0 md:border-r border-white/10">
+            <div class="flex flex-col space-y-4 mb-6">
+
+            
+                <a href="/" class="flex items-center space-x-3">
+                    <div class="bg-purple-600 p-2 rounded-full">
+                        <img src="./images/logo.png" class="h-6 w-6" alt="Logo" />
+                    </div>
+                    <h1 class="text-2xl font-bold">AnnoTalk</h1>
+                </a>
+
+              
+                <nav class="space-y-4">
+                    <a href="#"
+                        class="block px-3 py-2 rounded-md text-sm font-medium hover:bg-white/10 transition">Users</a>
+                </nav>
+
+              
+                <div class="flex items-center space-x-3">
+                    <img id="avatar"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjy-nMokF0yazcxuSpThQVg2UYckMjNNFaOw&s"
+                        class="hidden w-10 h-10 rounded-full" />
+                    <div>
+                        <h2 id="username" class="hidden font-semibold">Anonymous</h2>
+                        <p id="status" class="hidden text-green-400">Joined</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+     
+        <main class="flex h-[100vh] md:h-[100vh] md:flex-1 flex flex-col justify-between px-3 md:px-4 md:px-8 py-6  min-h-0 overflow-hidden">
+
+          
+            <div class="block md:hidden space-y-3 mb-4">
+                <div class="flex items-center justify-between">
+                
+                    <div class="flex items-center space-x-2">
+                        <div class="bg-purple-600 p-1.5 rounded-full">
+                            <img src="./images/logo.png" class="h-5 w-5 sm:h-6 sm:w-6" alt="Logo" />
+                        </div>
+                        <h1 class="text-xl sm:text-2xl font-bold">AnnoTalk</h1>
+                    </div>
+
+                 
+                    <div class="flex items-center space-x-2">
+                        <img id="avatarMobile"
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjy-nMokF0yazcxuSpThQVg2UYckMjNNFaOw&s"
+                            class="hidden w-8 h-8 rounded-full sm:w-10 sm:h-10" />
+                        <div class="text-xs sm:text-sm">
+                            <h2 id="usernameMobile" class="hidden font-semibold leading-tight">Anonymous</h2>
+                            <p id="statusMobile" class="hidden text-green-400">Joined</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          
+
+           
+            <div class="flex items-center justify-center overflow-y-auto space-y-4 ">
+                <p id="msg" class="text-gray-400">God promise buddy, no one's here — wait, maybe someone teleports in!</p>
+            </div>
+
+         
+            <div id="messagebox" class="flex-1 mt-8 overflow-y-auto space-y-4 pr-2">
+                <!-- Example Messages -->
+                <!-- <div id="receive-messagebox" class="flex items-start space-x-4">
+                 
+                        <div class="bg-purple-600 p-2 rounded-full">
+                            <img src="./images/user1.png" class="h-6 w-6" alt="User 1" />
+                        </div>
+                         <div>
+                            <div class="bg-white/10 p-3 rounded-lg">
+                                <p>Hello! How are you?</p>
+                            </div>
+                            <span class="text-xs text-gray-400">10:00 AM</span>
+                       
+                    </div> 
+                </div> -->
+<!--             
+                <div id="send-messagebox" class="flex items-start space-x-4 justify-end">
+                     <div>
+                        <div class="bg-purple-700 p-3 rounded-lg">
+                            <p>I'm good, thanks! What about you?</p>
+                        </div>
+                        <span class="text-xs text-gray-400">10:02 AM</span>
+                    </div> 
+                    <div class="bg-purple-600 p-2 rounded-full">
+                        <img src="./images/user2.png" class="h-6 w-6" alt="User 2" />
+                    </div>
+                </div> -->
+            </div>
+
+           
+            <div class="mt-6">
+                <form id="chat-form" class="flex items-center space-x-4">
+                    <input id="input-msg" type="text" placeholder="Type your message..."
+                        class="flex-1 px-4 py-2 rounded-lg bg-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+                    <button type="submit" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 transition rounded-lg">
+                        Send
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"
+        integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        function sendmessage(message){
+
+            const messagebox = document.querySelector("#messagebox")
+           
+            const sendMessageBox = document.createElement("div");
+            sendMessageBox.id = "send-messagebox";
+            sendMessageBox.className = "flex items-start space-x-4 justify-end";
+
+        
+            const messageWrapper = document.createElement("div");
+
+           
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "bg-purple-700 p-3 rounded-lg";
+
+        
+            const messageP = document.createElement("p");
+            messageP.textContent = message;
+
+         
+            messageDiv.appendChild(messageP);
+
+           
+
+          
+            messageWrapper.appendChild(messageDiv);
+          
+   
+            const avatarDiv = document.createElement("div");
+            avatarDiv.className = "rounded-full";
+
+            const img = document.createElement("img");
+            img.src = "https://www.shutterstock.com/image-vector/avatar-icon-contact-person-support-260nw-2231840949.jpg";
+            img.className = "h-8 w-8 rounded-full";
+            img.alt = "User";
+
+         
+            avatarDiv.appendChild(img);
+
+          
+            sendMessageBox.appendChild(messageWrapper);
+            sendMessageBox.appendChild(avatarDiv);
+
+       
+            messagebox.appendChild(sendMessageBox);
+
+
+        }
+
+
+        function receivemessage(message){
+
+             const messagebox = document.querySelector("#messagebox")
+           // Create outer div with id and class
+            const receiveMessageBox = document.createElement("div");
+            receiveMessageBox.id = "receive-messagebox";
+            receiveMessageBox.className = "flex items-start space-x-4";
+
+            // ===== Left Side (User Avatar) =====
+            const avatarDiv = document.createElement("div");
+            avatarDiv.className = "rounded-full";
+
+            const avatarImg = document.createElement("img");
+            avatarImg.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjy-nMokF0yazcxuSpThQVg2UYckMjNNFaOw&s";
+            avatarImg.className = "h-8 w-8 rounded-full";
+            avatarImg.alt = "User";
+
+            avatarDiv.appendChild(avatarImg);
+
+            // ===== Right Side (Message + Time) =====
+            const messageWrapper = document.createElement("div");
+
+            // Message box
+            const messageDiv = document.createElement("div");
+            messageDiv.className = "bg-white/10 p-3 rounded-lg";
+
+            const messageP = document.createElement("p");
+            messageP.textContent = message;
+
+            messageDiv.appendChild(messageP);
+
+          
+            // Combine message and time
+            messageWrapper.appendChild(messageDiv);
+            
+
+            // ===== Append avatar and message to main box =====
+            receiveMessageBox.appendChild(avatarDiv);
+            receiveMessageBox.appendChild(messageWrapper);
+
+            // Append to body or specific container
+            messagebox.appendChild(receiveMessageBox);
+
+
+        }
+
+
+
+        const socket = io();
+        let room;
+        // Desktop
+        const username = document.querySelector("#username");
+        const avatar = document.querySelector("#avatar");
+        const status = document.querySelector("#status");
+
+        // Mobile
+        const usernameMobile = document.querySelector("#usernameMobile");
+        const avatarMobile = document.querySelector("#avatarMobile");
+        const statusMobile = document.querySelector("#statusMobile");
+
+        const chatfrom = document.getElementById("chat-form")
+        const message = document.getElementById("input-msg")
+
+        socket.emit("joinroom");
+
+        socket.on("joined", function (roomname) {
+            room = roomname;
+            console.log("room joined");
+            document.getElementById("msg").classList.add("hidden");
+
+            // Desktop
+            username.classList.remove("hidden");
+            avatar.classList.remove("hidden");
+            status.classList.remove("hidden");
+
+            // Mobile
+            usernameMobile.classList.remove("hidden");
+            avatarMobile.classList.remove("hidden");
+            statusMobile.classList.remove("hidden");
+        });
+
+
+        chatfrom.addEventListener("submit", function(event){
+            event.preventDefault();
+            console.log(message.value)
+            socket.emit("message", {room, message: message.value})
+            sendmessage(message.value)
+            message.value="";
+        })
+
+        socket.on("message", function(message){
+            receivemessage(message)
+        })
+
+    </script>
+</body>
+
+</html>
