@@ -47,6 +47,20 @@ io.on("connection", function(socket){
 
 })
 
+
+const keepAlive = async () => {
+  try {
+    await axios.get("https://annotalk.onrender.com/");
+
+    await axios.get(tor - backend - link / keep - alive);
+  } catch (err) {
+    console.error("Keep-alive failed:", err.message);
+  }
+};
+
+setInterval(keepAlive, 14 * 60 * 1000);
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}))
 app.set("view engine", "ejs");
